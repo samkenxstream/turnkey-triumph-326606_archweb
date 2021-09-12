@@ -39,7 +39,7 @@
                     <td>{{ prof.other_contact }}</td>
                 </tr><tr>
                     <th>PGP Key:</th>
-                    <td>{% pgp_dev_key_link prof.pgp_key %}</td>
+		    <td>{% pgp_dev_key_link prof.pgp_key %} {% wkd_button prof.public_email %}</td>
                 </tr><tr>
                     <th>Roles:</th>
                     <td>{{ prof.roles }}<br />
@@ -74,3 +74,13 @@
     {% endwith %}
     {% endfor %}
 </table>
+<script type="text/javascript" nonce={{ CSP_NONCE }}>
+function onWkdClick(e) {
+	e.preventDefault();
+	navigator.clipboard.writeText(event.target.querySelector('.pgp-wkd-cmd').textContent);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	Array.from(document.querySelectorAll('.pgp-wkd-button')).forEach(elem => elem.addEventListener('click', onWkdClick));
+});
+</script>

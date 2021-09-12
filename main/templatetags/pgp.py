@@ -66,7 +66,6 @@ def user_pgp_key_link(dev_keys, key_id):
     else:
         return pgp_key_link(key_id, None)
 
-
 @register.filter
 def pgp_fingerprint(key_id):
     if not key_id:
@@ -80,5 +79,15 @@ def signature_exists(signatures, signer, signee):
         return False
     lookup = (signer[-16:], signee[-16:])
     return lookup in signatures
+
+
+@register.simple_tag
+def wkd_button(email):
+    if not email:
+        return ''
+    if not email.endswith("@archlinux.org"):
+        return ''
+    return format_html(f'<button title="Copy WKD command" class="pgp-wkd-button"><span class="pgp-wkd-cmd">gpg --auto-key-locate clear,wkd -v --locate-external-key {email}</span></button>')
+
 
 # vim: set ts=4 sw=4 et:
